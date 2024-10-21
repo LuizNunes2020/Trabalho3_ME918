@@ -11,6 +11,8 @@
 #
 
 library(plumber)
+library(tidyverse)
+library(jsonlite)
 
 db <- read_csv('data/dados_regressao.csv')
 
@@ -18,13 +20,33 @@ updateModel <- function() {
   model <<- lm(y ~ x * grupo, db)
 }
 
+updateModel()
+
 insertData <- function(x, grupo, y) {
   #Retonar o ID
-  }
+  id <-  max(db$id) + 1
+  db <<- db %>% add_row(data.frame(id = id, x = x, grupo = grupo, y = y, momento_registro = lubridate::now()))
+  
+  updateModel()
+  return(id)
+}
 
-modifyData <- function(id, x = NULL, grupo = NULL, y = NULL) {}
+modifyData <- function(id, x = NULL, grupo = NULL, y = NULL) {
+  indice <- which(db$id == id)
+  db$x[indice] <<- ifelse(is.null(x), db$x[indice], x)
+  db$grupo[indice] <<- ifelse(is.null(grupo), db$grupo[indice], grupo)
+  db$y[indice] <<- ifelse(is.null(y), db$y[indice], y)
+  db$momento_registro[indice] <<- lubridate::now()
+  updateModel()
+}
 
-deleteData <- function(id) {}
+deleteData <- function(id) {
+  if(!(id %in% db$id)) stop('Erro: ID não existente')
+  indice <- which(db$id == id)
+  db <<- db[-indice, ]
+  
+  updateModel()
+}
 
 
 
@@ -96,8 +118,21 @@ function() {
 
 #* @get /lm/parameters/siglevel
 function() {
-  #as.data.frame(summary(model)$coefficients[, 4])
+  as.matrix(summary(model)$coefficients[, 4]) |>
+    t() |>
+    as.data.frame()
   
+}
+
+#* @post /lm/predictions
+function(req) {
+  
+  return(print(req$body))
+  
+  body <- list(list(x = 5, grupo ='A'), list(x = 3, grupo = 'B'))
+  
+  preditores <- do.call(rbind, lapply(body, as.data.frame))
+  predict(model, preditores)
 }
 
 
