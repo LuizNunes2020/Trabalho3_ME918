@@ -69,8 +69,8 @@ function(x, grupo, y) {
 #* @param y
 #* @put /data/modify
 function(id, x = NULL, grupo = NULL, y = NULL) {
-  modifyData(id, x, grupo, y)
-  print("Alteração feita com sucesso!")
+  modifyData(as.numeric(id), as.numeric(x), grupo, as.numeric(y))
+  print(1)
 }
 
 # API deletar dado
@@ -78,7 +78,7 @@ function(id, x = NULL, grupo = NULL, y = NULL) {
 #* @delete /data/delete
 function(id) {
   deleteData(id)
-  print("Dado deletado com sucesso!")
+  print(1)
 }
 
 #* @serializer png
@@ -129,8 +129,6 @@ function() {
 function(req) {
   # curl -X "POST" "http://localhost:7572/lm/predictions" -H "accept: */*" -H "content-type:application/json" --data "{{\"x\": 1, \"grupo\": \"A\"}, {\"x\": 5, \"grupo\": \"B\"}}"
 
-  
-  # preditores <- do.call(rbind, lapply(body, as.data.frame))
   predict(model, req$body)
 }
 

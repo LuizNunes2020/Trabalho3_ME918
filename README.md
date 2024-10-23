@@ -3,30 +3,37 @@
 
 # API RegLinF - Regressão Linear com Plumber
 
-Este repositório contém a implementação de uma API para manipulação de
-um banco de dados utilizando o pacote **plumber** no R. A API permite a
-inserção, modificação, exclusão de dados e também análise de regressão
-linear múltipla com covariáveis. O objetivo principal desta API é
-realizar inferências com base em um modelo de regressão linear ajustado
-e gerar predições a partir de novos dados.
+Este repositório contém a implementação de uma API que permite ao
+usuário interagir com um modelo de regressão linear e realizar a
+manipulação do banco de dados utilizado para gerar o modelo através do
+pacote **plumber** no R. A API permite a obter as estimas dos
+coeficientes com seus respectivos níveis de significância, os resíduos,
+predição e diversos gráficos de diagnósticos; também, é possível
+realizar a inserção, modificação e exclusão de dados.
 
-## Estrutura do Banco de Dados
+## Estrutura do banco de dados
 
-O conjunto de dados contém três colunas principais: - **x**: variável
-numérica preditora. - **grupo**: variável categórica com três possíveis
-categorias: A, B e C. - **y**: variável resposta numérica contínua. Além
-disso, uma coluna chamada `momento_registro` é adicionada
+O conjunto de dados contém três colunas principais:
+
+- **id**: número de identificação da observação
+
+- **x**: variável numérica preditora.
+
+- **grupo**: variável categórica com três possíveis categorias: A, B e
+  C.
+
+- **y**: variável resposta numérica contínua.
+
+Além disso, uma coluna chamada `momento_registro` é adicionada
 automaticamente com a data e o horário da inserção de cada registro.
 
-## Inserir Novo Dado
+## Inserir Novo Dado (GET /data/insert)
 
-Para adicionar um novo registro, acesse a rota `/data/insert`, clique em
-“Try it out” e preencha os campos correspondentes às variáveis
-preditoras (x), resposta (y) e categórica (grupo) com os valores
-apropriados. As variáveis x e y devem ser numéricas, enquanto a variável
-grupo deve ser inserida como uma string. Após clicar em “Execute”, a API
-atualizará o banco de dados com o novo registro e retornará a observação
-inserida, incluindo a data e o horário de sua inserção.
+Para adicionar um novo registro, envie uma requisição para a rota
+`/data/insert`, especificando `x`, `grupo` e `y` com os valores
+apropriados. A API atualizará o banco de dados com o novo registro e
+retornará seu `id`. A API não suporta a inserção de mais do que uma
+observação por vez.
 
 Por exemplo, se os espaços fossem preenchidos com `x = 4`, `grupo = A`,
 e `y = 7`, a API retornará:
