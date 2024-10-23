@@ -127,13 +127,11 @@ function() {
 
 #* @post /lm/predictions
 function(req) {
+  # curl -X "POST" "http://localhost:7572/lm/predictions" -H "accept: */*" -H "content-type:application/json" --data "{{\"x\": 1, \"grupo\": \"A\"}, {\"x\": 5, \"grupo\": \"B\"}}"
+
   
-  return(print(req$body))
-  
-  body <- list(list(x = 5, grupo ='A'), list(x = 3, grupo = 'B'))
-  
-  preditores <- do.call(rbind, lapply(body, as.data.frame))
-  predict(model, preditores)
+  # preditores <- do.call(rbind, lapply(body, as.data.frame))
+  predict(model, req$body)
 }
 
 
