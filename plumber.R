@@ -14,6 +14,8 @@ library(plumber)
 library(tidyverse)
 library(jsonlite)
 
+set.seed(204256)
+
 db <- read_csv('data/dados_regressao.csv')
 
 updateModel <- function() {
@@ -26,6 +28,7 @@ insertData <- function(x, grupo, y) {
   #Retonar o ID
   id <-  max(db$id) + 1
   db <<- db %>% add_row(data.frame(id = id, x = x, grupo = grupo, y = y, momento_registro = lubridate::now()))
+  write_csv(db, 'data/dados_regressao.csv')
   
   updateModel()
   return(id)
@@ -33,10 +36,13 @@ insertData <- function(x, grupo, y) {
 
 modifyData <- function(id, x = NULL, grupo = NULL, y = NULL) {
   indice <- which(db$id == id)
-  db$x[indice] <<- ifelse(is.null(x), db$x[indice], x)
+  db$x[indice] <<- ifelse(is.null(x) | is.na(x), db$x[indice], x)
   db$grupo[indice] <<- ifelse(is.null(grupo), db$grupo[indice], grupo)
-  db$y[indice] <<- ifelse(is.null(y), db$y[indice], y)
+  db$y[indice] <<- ifelse(is.null(y)| is.na(y), db$y[indice], y)
   db$momento_registro[indice] <<- lubridate::now()
+  
+  write_csv(db, 'data/dados_regressao.csv')
+  
   updateModel()
 }
 
@@ -44,6 +50,8 @@ deleteData <- function(id) {
   if(!(id %in% db$id)) stop('Erro: ID não existente')
   indice <- which(db$id == id)
   db <<- db[-indice, ]
+  
+  write_csv(db, 'data/dados_regressao.csv')
   
   updateModel()
 }
