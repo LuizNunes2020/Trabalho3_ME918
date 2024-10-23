@@ -58,7 +58,7 @@ deleteData <- function(id) {
 #* @param y
 #* @post /data/insert
 function(x, grupo, y) {
-  id <- insertData(x, grupo, y)
+  id <- insertData(as.numeric(x), grupo, as.numeric(y))
   print(id)
 }
 
