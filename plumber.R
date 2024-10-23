@@ -16,6 +16,8 @@ library(jsonlite)
 
 set.seed(204256)
 
+options("plumber.port" = 4627)
+
 db <- read_csv('data/dados_regressao.csv')
 
 updateModel <- function() {

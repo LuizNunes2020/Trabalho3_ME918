@@ -125,6 +125,6 @@ duas predições, para a rota `/lm/predictions`.
 
 A API retornará os valores preditos em formato `json`.
 
-Exemplo: curl -X “POST” “<http://localhost:7572/lm/predictions>” -H
+Exemplo: curl -X “POST” “<http://localhost:4627/lm/predictions>” -H
 “accept: \*/\*” -H “content-type:application/json” –data “{{"x": 1,
 "grupo": "A"}, {"x": 5, "grupo": "B"}}”
