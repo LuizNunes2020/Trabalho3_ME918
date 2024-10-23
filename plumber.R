@@ -75,6 +75,7 @@ function(id, x = NULL, grupo = NULL, y = NULL) {
 
 # API deletar dado
 #* @param id
+#* @delete /data/delete
 function(id) {
   deleteData(id)
   print("Dado deletado com sucesso!")
