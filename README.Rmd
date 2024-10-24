@@ -147,7 +147,7 @@ A rota `/lm/plot/residuals` permite analisar os resíduos do modelo de regressã
 Exemplo: curl -X 'GET' \\ 'http://127.0.0.1:4627/lm/plot/residuals' \\ -H 'accept: image/png'
 
 ```{r, echo = FALSE}
-ggplot(NULL, aes(x = model$fitted, y = model$residuals)) +
+ggplot(db, aes(x = model$fitted, y = model$residuals)) +
     geom_point() +
     labs(x = 'Ajustados',
          y = 'Resíduos') +
